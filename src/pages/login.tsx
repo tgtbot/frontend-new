@@ -47,7 +47,7 @@ export default function LoginPage() {
       <div className="w-full">
         <Card title="Login">
           <TelegramLoginButton
-            botName="tgt-dashboard"
+            botName="tgtdev_bot"
             buttonSize="medium"
             cornerRadius={8}
             dataOnauth={handleLogin}

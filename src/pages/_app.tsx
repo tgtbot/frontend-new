@@ -14,7 +14,14 @@ import Head from "next/head";
 import merge from "lodash.merge";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { queryClient } from "@/components/queries";
+import { queryClient } from "@/queries";
+import login from "@/utils/login";
+import { useEffect } from "react";
+import type SDK from "@twa-dev/sdk";
+import { useAtom } from "jotai";
+import { sdkAtom } from "@/store";
+import { TgtProvider } from "@/components/TgtProvider";
+import Layout from "@/components/Layout/Layout";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, polygon],
@@ -46,6 +53,25 @@ const customDarkTheme = merge(darkTheme(), {
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [, setSDK] = useAtom(sdkAtom);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) return;
+
+    if (typeof window !== "undefined") {
+      const sdk = require("@twa-dev/sdk").default as typeof SDK;
+      setSDK(sdk);
+
+      if (sdk.initData) {
+        login(sdk.initData, "telegramMiniApp").then((token) => {
+          if (token) {
+            localStorage.setItem("token", token);
+          }
+        });
+      }
+    }
+  }, [setSDK]);
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider
@@ -61,8 +87,12 @@ export default function App({ Component, pageProps }: AppProps) {
         </Head>
 
         <QueryClientProvider client={queryClient}>
-          <Component {...pageProps} />
-          <ReactQueryDevtools />
+          <TgtProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+            <ReactQueryDevtools />
+          </TgtProvider>
         </QueryClientProvider>
 
         {/* <Toaster position="top-center" /> */}

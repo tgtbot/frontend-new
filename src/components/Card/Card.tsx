@@ -9,9 +9,9 @@ type CardProps = {
 
 const Card = ({ height, className, title, children }: CardProps) => {
   return (
-    <div className="w-fill">
-      {title && <h3 className="w-fill">{title}</h3>}
-      <div className="w-fill">{children}</div>
+    <div className="p-4 overflow-hidden bg-[#242527] rounded-xl">
+      {title && <h3 className="">{title}</h3>}
+      <div className="">{children}</div>
     </div>
   );
 };

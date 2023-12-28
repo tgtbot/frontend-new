@@ -1,0 +1,311 @@
+.profile {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: rhythm(3);
+  height: 100%;
+  padding: rhythm(3);
+  overflow: auto;
+}
+
+.userPanel {
+  margin-bottom: rhythm(3);
+
+  &__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
+  }
+
+  &__email {
+    margin-top: rhythm(1);
+    margin-bottom: rhythm(2);
+    font-size: 14px;
+    line-height: 16px;
+    color: #ccc;
+  }
+
+  &__edit {
+    padding: 0 rhythm(1);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 24px;
+    color: #fff;
+    cursor: pointer;
+    background: #cd7962;
+    border: none;
+    border-radius: rhythm(0.5);
+    outline: none;
+  }
+}
+
+.table {
+  width: calc(100% + 32px);
+  margin: rhythm(2) rhythm(-2) 0;
+  border-spacing: 0;
+  border-collapse: collapse;
+
+  > thead {
+    background: #333;
+  }
+
+  th {
+    padding: rhythm(1) 0;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: rhythm(2);
+    text-align: left;
+
+    &:first-child {
+      padding-left: rhythm(2);
+    }
+
+    &:last-child {
+      padding-right: rhythm(2);
+      text-align: right;
+    }
+  }
+
+  > tbody {
+    font-size: 12px;
+    line-height: rhythm(2);
+    color: #ccc;
+
+    > tr:nth-child(2n) {
+      background: #2c2c2c;
+    }
+
+    td {
+      padding: rhythm(1) 0;
+
+      &:first-child {
+        padding-left: rhythm(2);
+      }
+
+      &:last-child {
+        padding-right: rhythm(2);
+        text-align: right;
+      }
+    }
+  }
+}
+
+.mainHeading {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: rhythm(2);
+  opacity: 0.5;
+}
+
+.myGroups {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: rhythm(2);
+}
+
+.groupCard {
+  &__heading {
+    padding-top: rhythm(0.5);
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: rhythm(2.5);
+  }
+
+  &__tags {
+    composes: groupPanel__tags from "./Group.module.scss";
+  }
+
+  &__tag {
+    composes: groupPanel__tag from "./Group.module.scss";
+  }
+
+  &__data {
+    margin: rhythm(1) 0 rhythm(1.5);
+    font-size: 14px;
+    line-height: 24px;
+    color: #aaa;
+
+    > li {
+      display: flex;
+      justify-content: space-between;
+
+      &:hover {
+        color: #eee;
+      }
+    }
+
+    strong {
+      font-weight: 500;
+    }
+  }
+
+  &__link {
+    display: block;
+    padding: rhythm(1);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: #999;
+    text-align: center;
+    cursor: pointer;
+    background: #444;
+    border: none;
+    border-radius: rhythm(1);
+    outline: none;
+  }
+
+  &__message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 0;
+    font-size: 14px;
+    line-height: 16px;
+    color: #999;
+  }
+}
+
+.dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  padding: rhythm(10);
+  overflow: auto;
+  backdrop-filter: blur(4px);
+
+  &__box {
+    width: 400px;
+    padding: rhythm(3) rhythm(2.5);
+    color: #fff;
+    background: #242527;
+    border: 1px solid #333;
+    border-radius: 12px;
+  }
+
+  &__title {
+    margin: 0 0 rhythm(2);
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  label {
+    display: block;
+    margin-bottom: rhythm(1.5);
+
+    > span {
+      display: block;
+      margin-bottom: rhythm(1);
+      font-size: 12px;
+      line-height: rhythm(2);
+    }
+
+    > input {
+      display: block;
+      width: 100%;
+      height: rhythm(5);
+      padding: 0 rhythm(1.5);
+      font-size: 14px;
+      line-height: rhythm(2);
+      color: #999;
+      background: #1f1f1f;
+      border: 1px solid #333;
+      border-radius: rhythm(1);
+      outline: none;
+
+      &::placeholder {
+        color: #444;
+      }
+
+      &:focus {
+        border-color: #cd7962;
+      }
+    }
+  }
+
+  &__bgroup {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: rhythm(2);
+    padding-top: rhythm(2);
+  }
+
+  button {
+    display: block;
+    width: 100%;
+    height: rhythm(5);
+    padding: 0;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: rhythm(2);
+    color: #fff;
+    cursor: pointer;
+    background: #777;
+    border: none;
+    border-radius: rhythm(1);
+    outline: none;
+    opacity: 0.75;
+
+    &[type="submit"] {
+      color: #fff;
+      background: #cd7962;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    &:not(:disabled):hover {
+      opacity: 1;
+    }
+  }
+}
+
+.address {
+  padding: rhythm(1);
+  font-size: 13.3px;
+  line-height: 16px;
+  color: #999;
+  background: #1f1f1f;
+  border: 1px;
+  border: 1px solid #333;
+  border-radius: 8px;
+
+  &::before {
+    display: block;
+    margin-bottom: rhythm(0.75);
+    color: #fff;
+    content: "Connect with address:";
+  }
+}
+
+.connectButton {
+  padding: 1px rhythm(0.75);
+  font: inherit;
+  color: #999;
+  cursor: pointer;
+  background: #444;
+  border: none;
+  border-radius: rhythm(0.5);
+  outline: none;
+
+  &:hover {
+    color: #ccc;
+  }
+}
+
+.nonPubilcMessage {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #ccc;
+  text-align: center;
+}

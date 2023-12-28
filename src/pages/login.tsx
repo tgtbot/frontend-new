@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
-import { axios } from "@/components/queries";
+import { axios } from "@/queries";
 // import toast from "react-hot-toast";
 // import css from "styles/pages/Login.module.scss";
 import type { AxiosError, AxiosResponse } from "axios";

@@ -12,6 +12,9 @@ import { publicProvider } from "wagmi/providers/public";
 import { mainnet, polygon } from "wagmi/chains";
 import Head from "next/head";
 import merge from "lodash.merge";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { queryClient } from "@/components/queries";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, polygon],
@@ -57,10 +60,10 @@ export default function App({ Component, pageProps }: AppProps) {
           <link rel="shortcut icon" href="/favicon.ico" />
         </Head>
 
-        {/* <QueryClientProvider client={queryClient}> */}
-        <Component {...pageProps} />
-        {/* <ReactQueryDevtools /> */}
-        {/* </QueryClientProvider> */}
+        <QueryClientProvider client={queryClient}>
+          <Component {...pageProps} />
+          <ReactQueryDevtools />
+        </QueryClientProvider>
 
         {/* <Toaster position="top-center" /> */}
       </RainbowKitProvider>

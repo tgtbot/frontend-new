@@ -29,6 +29,7 @@ export default function LoginPage() {
     onError: (error: AxiosError<any>) => {
       const errorMassage = error.response?.data.message || error.message;
       //   toast.error(errorMassage);
+      console.log(errorMassage);
     },
   });
 

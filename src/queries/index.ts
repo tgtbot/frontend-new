@@ -33,7 +33,7 @@ axios.interceptors.response.use(
     if (error.response.status === 401) {
       localStorage.removeItem("token");
       localStorage.removeItem("userName");
-      window.location.href = "/login?redirect=" + window.location.pathname;
+      // window.location.href = "/login?redirect=" + window.location.pathname;
     }
     return Promise.reject(error);
   }

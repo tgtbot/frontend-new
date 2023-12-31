@@ -13,6 +13,7 @@ interface Props {
 }
 
 export default function Desktop({ goPage, urlPath }: Props) {
+  console.log(urlPath);
   return (
     <header className="bg-bgB hidden self-stretch h-[72px] lg:flex w-full items-center justify-between px-6 border-bgW/20 border-b">
       <div className="flex items-center justify-between gap-5">
@@ -22,8 +23,7 @@ export default function Desktop({ goPage, urlPath }: Props) {
         <Link
           href="/group/-1002063149191"
           className={`text-sm tracking-wider flex gap-2 items-center opacity-60 hover:opacity-100 font-bold ${
-            urlPath === "/group/-1002063149191" &&
-            "underline underline-offset-2"
+            urlPath === "/group/[id]" && "opacity-100"
           }`}
           aria-label="DashBoard"
         >
@@ -33,7 +33,7 @@ export default function Desktop({ goPage, urlPath }: Props) {
         <Link
           href="/search"
           className={`text-sm tracking-wider flex gap-2 items-center opacity-60 hover:opacity-100 font-bold ${
-            urlPath === "/search" && "underline underline-offset-2"
+            urlPath === "/search" && "opacity-100"
           }`}
           aria-label="Search"
         >
@@ -43,7 +43,7 @@ export default function Desktop({ goPage, urlPath }: Props) {
         <Link
           href="/profile"
           className={`text-sm tracking-wider flex gap-2 items-center opacity-60 hover:opacity-100 font-bold ${
-            urlPath === "/profile" && "underline underline-offset-2"
+            urlPath === "/profile" && "opacity-100"
           }`}
           aria-label="Profile"
         >

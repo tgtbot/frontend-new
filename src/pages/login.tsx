@@ -44,10 +44,13 @@ export default function LoginPage() {
         <title>Login</title>
       </Head>
 
-      <div className="w-full">
+      <div
+        className="w-full items-center justify-center flex"
+        style={{ height: `calc(100vh - 72px)` }}
+      >
         <Card title="Login">
           <TelegramLoginButton
-            botName="tgtdev_bot"
+            botName="tgt_help_bot"
             buttonSize="medium"
             cornerRadius={8}
             dataOnauth={handleLogin}

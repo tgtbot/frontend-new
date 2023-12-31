@@ -8,7 +8,6 @@ import dayjs from "dayjs";
 // import toast from "react-hot-toast";
 import merge from "lodash.merge";
 // import PageLayout from "components/PageLayout";
-// import LoadingPage from "components/LoadingPage";
 // import Card from "components/Card";
 // import TagsInput from "components/TagsInput";
 // import { LanguageSelect, LocationSelect } from "components/Select";
@@ -16,7 +15,7 @@ import css from "@/styles/pages/Group.module.scss";
 
 import type { AxiosError } from "axios";
 import Card from "@/components/Card/Card";
-import LoadingPage from "@/components/LoadingPage";
+import LoadingPage from "@/components/LoadingPage/LoadingPage";
 // import type { Tag } from "react-tag-autocomplete";
 
 // const UserTrendChart = dynamic(() => import("components/UserTrendChart"), { ssr: false });
@@ -27,8 +26,8 @@ import LoadingPage from "@/components/LoadingPage";
 const StatusCard = ({ title, value }: { title: string; value: string }) => {
   return (
     <Card>
-      <strong className="">{title}</strong>
-      <span className="mt-2">{value}</span>
+      <strong className={css.StatusCard__title}>{title}</strong>
+      <span className={css.StatusCard__value}>{value}</span>
     </Card>
   );
 };
@@ -229,7 +228,7 @@ export default function GroupDashboardPage() {
             </div>
           </Card>
 
-          <div className={css.statusPanel}>
+          <div className="grid grid-cols-2 gap-4">
             <StatusCard title="24h Growth" value={growth.growth24h} />
             <StatusCard title="30d Growth" value={growth.growth30d} />
             <StatusCard title="365d Growth" value={growth.growth365d} />

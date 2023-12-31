@@ -60,7 +60,7 @@
   padding-bottom: rhythm(10);
 
   &__heading {
-    margin: 0 0 rhythm(2);
+    margin: 0 0 16px;
     font-size: 24px;
     line-height: 32px;
   }
@@ -68,8 +68,8 @@
 
 .accordion {
   &__item:not(:last-child) {
-    padding-bottom: rhythm(2);
-    margin-bottom: rhythm(2);
+    padding-bottom: 16px;
+    margin-bottom: 16px;
     border-bottom: 1px solid #333;
   }
 
@@ -77,7 +77,7 @@
     padding: 0;
     font: inherit;
     font-size: 14px;
-    line-height: rhythm(2);
+    line-height: 16px;
     color: #ccc;
     cursor: pointer;
     background: transparent;
@@ -91,7 +91,7 @@
   }
 
   &__content {
-    padding-top: rhythm(1);
+    padding-top: 8px;
     font-size: 14px;
     line-height: 20px;
     color: #999;

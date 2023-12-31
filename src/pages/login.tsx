@@ -36,6 +36,7 @@ export default function LoginPage() {
   const handleLogin = (user: any) => {
     localStorage.setItem("userName", user.first_name);
     const msg = new URLSearchParams(user).toString();
+    console.log(msg);
     mutateLogin(msg);
   };
 

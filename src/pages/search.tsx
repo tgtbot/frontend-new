@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import { useMutation } from "@tanstack/react-query";
-// import toast from "react-hot-toast";
+import toast from "react-hot-toast";
 // import PageLayout from "components/PageLayout";
 import Card from "@/components/Card/Card";
 // import TagsInput from "components/TagsInput";
@@ -33,7 +33,7 @@ export default function Search() {
     mutationFn: searchFn,
     onError: (error: AxiosError<any>) => {
       const errorMassage = error.response?.data.message || error.message;
-      // toast.error(errorMassage);
+      toast.error(errorMassage);
     },
   });
 

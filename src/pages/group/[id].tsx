@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useQueries, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axios } from "@/queries";
 import dayjs from "dayjs";
-// import toast from "react-hot-toast";
+import toast from "react-hot-toast";
 import merge from "lodash.merge";
 // import PageLayout from "components/PageLayout";
 // import Card from "components/Card";
@@ -70,12 +70,12 @@ function EditorDialog({
             });
           }
         );
-        // toast.success("Successfully updated.");
+        toast.success("Successfully updated.");
         handleClose();
       },
       onError: (error: AxiosError<any>) => {
         const errorMassage = error.response?.data.message || error.message;
-        // toast.error(errorMassage);
+        toast.error(errorMassage);
       },
     }
   );

@@ -9,7 +9,7 @@ import {
 } from "wagmi";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axios } from "@/queries";
-// import toast from "react-hot-toast";
+import toast from "react-hot-toast";
 import dayjs from "dayjs";
 // import PageLayout from "components/PageLayout";
 import LoadingPage from "@/components/LoadingPage/LoadingPage";
@@ -88,12 +88,12 @@ function EditorDialog({
           email,
           isPublic,
         }));
-        // toast.success("Successfully updated.");
+        toast.success("Successfully updated.");
         handleClose();
       },
       onError: (error: AxiosError<any>) => {
         const errorMassage = error.response?.data.message || error.message;
-        // toast.error(errorMassage);
+        toast.error(errorMassage);
       },
     });
 
@@ -162,13 +162,13 @@ function ConnectDialog({
     mutationKey: ["verifyEmail"],
     mutationFn: verifyEmailFn,
     onSuccess: () => {
-      // toast.success("Successfully verified address.");
+      toast.success("Successfully verified address.");
       handleClose();
       refresh();
     },
     onError: (error: AxiosError<any>) => {
       const errorMassage = error.response?.data.message || error.message;
-      // toast.error(errorMassage);
+      toast.error(errorMassage);
     },
   });
 
@@ -319,12 +319,12 @@ export default function Profile() {
     if (!targetChain.isEVM) {
       // TODO: redirect to a specific connect page,
       //       or use a multichain wallet.
-      // toast.error("This chain is not supported yet.");
+      toast.error("This chain is not supported yet.");
       return;
     }
 
     if (!isConnected) {
-      // toast.error("Please connect your wallet first.");
+      toast.error("Please connect your wallet first.");
       return;
     }
 
@@ -334,7 +334,7 @@ export default function Profile() {
           setShowConnectDialog(true);
         })
         .catch(() => {
-          // toast.error("Failed to switch network.");
+          toast.error("Failed to switch network.");
         });
       return;
     }

@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
 import { axios } from "@/queries";
-// import toast from "react-hot-toast";
+import toast from "react-hot-toast";
 // import css from "styles/pages/Login.module.scss";
 import type { AxiosError, AxiosResponse } from "axios";
 import Card from "@/components/Card/Card";
@@ -28,7 +28,7 @@ export default function LoginPage() {
     },
     onError: (error: AxiosError<any>) => {
       const errorMassage = error.response?.data.message || error.message;
-      //   toast.error(errorMassage);
+      toast.error(errorMassage);
       console.log(errorMassage);
     },
   });

@@ -29,14 +29,14 @@ export default function LoginPage() {
     onError: (error: AxiosError<any>) => {
       const errorMassage = error.response?.data.message || error.message;
       toast.error(errorMassage);
-      console.log(errorMassage);
+      console.log("errorMassage", errorMassage);
     },
   });
 
   const handleLogin = (user: any) => {
     localStorage.setItem("userName", user.first_name);
     const msg = new URLSearchParams(user).toString();
-    console.log(msg);
+    console.log("msg", msg);
     mutateLogin(msg);
   };
 

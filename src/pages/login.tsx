@@ -18,6 +18,21 @@ export default function LoginPage() {
   const router = useRouter();
   const { redirect } = router.query as { redirect?: string };
 
+  const login = async (user: any) => {
+    const msg = new URLSearchParams(user).toString();
+    try {
+      const res = await axios.post("/auth/login", { msg, type: "telegram" });
+      console.log(res);
+      const token = res.data.data.access_token;
+      localStorage.setItem("token", token);
+      router.push(redirect || "/profile");
+    } catch (error: any) {
+      const errorMassage = error.response?.data.message || error.message;
+
+      toast.error(errorMassage);
+    }
+  };
+
   const { mutate: mutateLogin } = useMutation({
     mutationKey: ["login"],
     mutationFn: loginFn,
@@ -29,14 +44,12 @@ export default function LoginPage() {
     onError: (error: AxiosError<any>) => {
       const errorMassage = error.response?.data.message || error.message;
       toast.error(errorMassage);
-      console.log("errorMassage", errorMassage);
     },
   });
 
   const handleLogin = (user: any) => {
     localStorage.setItem("userName", user.first_name);
     const msg = new URLSearchParams(user).toString();
-    console.log("msg", msg);
     mutateLogin(msg);
   };
 
@@ -55,7 +68,7 @@ export default function LoginPage() {
             botName="tgt_help_bot"
             buttonSize="medium"
             cornerRadius={8}
-            dataOnauth={handleLogin}
+            dataOnauth={login}
           />
         </Card>
       </div>

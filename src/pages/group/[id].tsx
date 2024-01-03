@@ -1,27 +1,36 @@
 import { useState, useMemo } from "react";
 import Head from "next/head";
-// import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useQueries, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axios } from "@/queries";
 import dayjs from "dayjs";
 import toast from "react-hot-toast";
 import merge from "lodash.merge";
-// import PageLayout from "components/PageLayout";
-// import Card from "components/Card";
 // import TagsInput from "components/TagsInput";
 // import { LanguageSelect, LocationSelect } from "components/Select";
 import css from "@/styles/pages/Group.module.scss";
-
 import type { AxiosError } from "axios";
 import Card from "@/components/Card/Card";
 import LoadingPage from "@/components/LoadingPage/LoadingPage";
+import dynamic from "next/dynamic";
 // import type { Tag } from "react-tag-autocomplete";
+import { FaLocationDot } from "react-icons/fa6";
+import { MdLanguage } from "react-icons/md";
 
-// const UserTrendChart = dynamic(() => import("components/UserTrendChart"), { ssr: false });
-// const MessageTrendChart = dynamic(() => import("components/MessageTrendChart"), { ssr: false });
-// const LevelPieChart = dynamic(() => import("components/LevelPieChart"), { ssr: false });
-// const EmotionColorChart = dynamic(() => import("components/EmotionColorChart"), { ssr: false });
+const UserTrendChart = dynamic(() => import("@/components/UserTrendChart"), {
+  ssr: false,
+});
+const MessageTrendChart = dynamic(
+  () => import("@/components/MessageTrendChart"),
+  { ssr: false }
+);
+const LevelPieChart = dynamic(() => import("@/components/LevelPieChart"), {
+  ssr: false,
+});
+const EmotionColorChart = dynamic(
+  () => import("@/components/EmotionColorChart"),
+  { ssr: false }
+);
 
 const StatusCard = ({ title, value }: { title: string; value: string }) => {
   return (
@@ -223,8 +232,14 @@ export default function GroupDashboardPage() {
               ))}
             </div>
             <div className={css.groupPanel__meta}>
-              <span className={css.groupPanel__location}>{group.location}</span>
-              <span className={css.groupPanel__language}>{group.language}</span>
+              <span className="flex items-center mr-4 gap-1">
+                <FaLocationDot size="16px" />
+                {group.location}
+              </span>
+              <span className="flex items-center mr-4 gap-1">
+                <MdLanguage size="18px" />
+                {group.language}
+              </span>
             </div>
           </Card>
 
@@ -236,21 +251,33 @@ export default function GroupDashboardPage() {
           </div>
         </div>
 
-        {/* <Card title="User Trending" className={css.chart}>
+        <div className={`p-4 overflow-hidden bg-[#242527] rounded-xl h-full`}>
+          <h3 className="mb-3 leading-[16px]">User Trending</h3>
+          <div className="h-96">
             <UserTrendChart id={id} />
-          </Card>
+          </div>
+        </div>
 
-          <Card title="Message Trending" className={css.chart}>
+        <div className={`p-4 overflow-hidden bg-[#242527] rounded-xl h-full`}>
+          <h3 className="mb-3 leading-[16px]">Message Trending</h3>
+          <div className="h-96">
             <MessageTrendChart id={id} />
-          </Card>
+          </div>
+        </div>
 
-          <Card title="User Levels" className={css.chart}>
+        <div className={`p-4 overflow-hidden bg-[#242527] rounded-xl h-full`}>
+          <h3 className="mb-3 leading-[16px]">User Levels</h3>
+          <div className="h-96">
             <LevelPieChart id={id} />
-          </Card>
+          </div>
+        </div>
 
-          <Card title="User Emotion Colors" className={css.chart}>
+        <div className={`p-4 overflow-hidden bg-[#242527] rounded-xl h-full`}>
+          <h3 className="mb-3 leading-[16px]">User Emotion Colors</h3>
+          <div className="h-96">
             <EmotionColorChart id={id} />
-          </Card> */}
+          </div>
+        </div>
       </div>
 
       <EditorDialog

@@ -18,6 +18,7 @@ import Card from "@/components/Card/Card";
 import css from "@/styles/pages/User.module.scss";
 
 import type { AxiosError } from "axios";
+import Switch from "@/components/Switch/Switch";
 
 const chainIdMap: Record<
   string,
@@ -127,10 +128,10 @@ function EditorDialog({
           </label>
           <label>
             <span>Is Public</span>
-            {/* <Switch
+            <Switch
               checked={isPublic}
               onChange={(checked) => setIsPublic(checked)}
-            /> */}
+            />
           </label>
           <div className={css.dialog__bgroup}>
             <button type="button" onClick={handleClose}>
@@ -302,9 +303,7 @@ export default function Profile() {
     queryKey: ["myProfile"],
     queryFn: () => axios.get("/users/profile"),
     select: (data: any) => {
-      console.log("data", data.data.data);
       const { userInfo, groupsInfo } = data.data.data;
-
       return {
         userData: userInfo,
         pinnedGroups: groupsInfo.filter((i: any) => i.isPinned),
@@ -355,8 +354,8 @@ export default function Profile() {
       </Head>
 
       <div className={css.profile}>
-        <aside>
-          <Card className={css.userPanel}>
+        <aside className="flex flex-col gap-6">
+          <Card>
             <h2 className={css.userPanel__title}>
               {data.userData.username ||
                 localStorage.getItem("userName") ||
@@ -371,7 +370,7 @@ export default function Profile() {
             </button>
           </Card>
 
-          <Card className={css.userPanel}>
+          <Card>
             <h2 className={css.userPanel__title}>My Wallets</h2>
             <table className={css.table}>
               <thead>
@@ -411,9 +410,9 @@ export default function Profile() {
         </aside>
 
         <main>
-          <h3 className={css.mainHeading}>Pinned Groups:</h3>
           {!!data.pinnedGroups.length && (
             <>
+              <h3 className={css.mainHeading}>Pinned Groups:</h3>
               <div className={css.myGroups}>
                 {data.pinnedGroups.map((i: any) => (
                   <GroupCard key={i.chat_id} data={i} />

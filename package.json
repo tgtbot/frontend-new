@@ -9,10 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nivo/bar": "^0.84.0",
+    "@nivo/core": "^0.84.0",
+    "@nivo/line": "^0.84.0",
+    "@nivo/pie": "^0.84.0",
     "@rainbow-me/rainbowkit": "^1.3.2",
     "@swc-jotai/react-refresh": "^0.1.0",
     "@tanstack/react-query-devtools": "^5.14.0",
     "@twa-dev/sdk": "^6.9.2",
+    "@zag-js/react": "^0.31.1",
+    "@zag-js/switch": "^0.31.1",
     "axios": "^1.6.3",
     "dayjs": "^1.11.10",
     "jotai": "^2.6.0",

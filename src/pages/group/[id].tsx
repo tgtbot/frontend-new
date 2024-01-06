@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useQueries, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -6,8 +6,8 @@ import { axios } from "@/queries";
 import dayjs from "dayjs";
 import toast from "react-hot-toast";
 import merge from "lodash.merge";
-// import TagsInput from "components/TagsInput";
-// import { LanguageSelect, LocationSelect } from "components/Select";
+import TagsInput from "@/components/TagsInput";
+import { LanguageSelect, LocationSelect } from "@/components/Select";
 import css from "@/styles/pages/Group.module.scss";
 import type { AxiosError } from "axios";
 import Card from "@/components/Card/Card";
@@ -45,6 +45,8 @@ function updateGroupFn(data: any) {
   return axios.post(`/groups/info/${data.id}`, {
     name: data.name,
     bio: data.bio,
+    location: data.location,
+    language: data.language,
   });
 }
 
@@ -57,8 +59,8 @@ function EditorDialog({
   open: boolean;
   handleClose: () => void;
 }) {
-  const [name, setName] = useState(data.name);
-  const [bio, setBio] = useState(data.bio);
+  const [name, setName] = useState(data?.name);
+  const [bio, setBio] = useState(data?.bio);
   const [tags, setTags] = useState<any>([]);
   const [location, setLocation] = useState("");
   const [language, setLanguage] = useState("");
@@ -98,8 +100,14 @@ function EditorDialog({
     e.preventDefault();
 
     if (!isDisabled) {
-      console.log(tags, location, language);
-      mutateUpdateGroup({ id: data.chat_id.toString(), name, bio });
+      console.log("tags", tags);
+      mutateUpdateGroup({
+        id: data.chat_id.toString(),
+        name,
+        bio,
+        location,
+        language,
+      });
     }
   };
 
@@ -127,15 +135,15 @@ function EditorDialog({
           </div>
           <div className={css.dialog__label}>
             <span>Tags</span>
-            {/* <TagsInput onChange={setTags} allowNew /> */}
+            <TagsInput onChange={setTags} allowNew />
           </div>
           <div className={css.dialog__label}>
             <span>Location</span>
-            {/* <LocationSelect onChange={setLocation} /> */}
+            <LocationSelect onChange={setLocation} />
           </div>
           <div className={css.dialog__label}>
             <span>Language</span>
-            {/* <LanguageSelect onChange={setLanguage} /> */}
+            <LanguageSelect onChange={setLanguage} />
           </div>
           <div className={css.dialog__bgroup}>
             <button
@@ -208,13 +216,12 @@ export default function GroupDashboardPage() {
       <Head>
         <title>Group Dashboard</title>
       </Head>
-
-      <div className={css.page}>
-        <div className={css.group}>
+      <div className="h-full overflow-auto">
+        <div className="grid gap-4 h-full p-6 grid-cols-1 lg:grid-cols-2">
           <Card className={css.groupPanel}>
             <h2 className={css.groupPanel__title}>
-              {group.name}
-              {group.isAdmin && (
+              {group?.name}
+              {group?.isAdmin && (
                 <button
                   className={css.groupPanel__edit}
                   onClick={() => setShowEditorDialog(!showEditorDialog)}
@@ -223,9 +230,9 @@ export default function GroupDashboardPage() {
                 </button>
               )}
             </h2>
-            <p className={css.groupPanel__description}>{group.bio}</p>
+            <p className={css.groupPanel__description}>{group?.bio}</p>
             <div className={css.groupPanel__tags}>
-              {group.tags.map((tag: string) => (
+              {group?.tags.map((tag: string) => (
                 <span className={css.groupPanel__tag} key={tag}>
                   {tag}
                 </span>
@@ -234,52 +241,51 @@ export default function GroupDashboardPage() {
             <div className={css.groupPanel__meta}>
               <span className="flex items-center mr-4 gap-1">
                 <FaLocationDot size="16px" />
-                {group.location}
+                {group?.location}
               </span>
               <span className="flex items-center mr-4 gap-1">
                 <MdLanguage size="18px" />
-                {group.language}
+                {group?.language}
               </span>
             </div>
           </Card>
 
-          <div className="grid grid-cols-2 gap-4">
-            <StatusCard title="24h Growth" value={growth.growth24h} />
-            <StatusCard title="30d Growth" value={growth.growth30d} />
-            <StatusCard title="365d Growth" value={growth.growth365d} />
+          <div className="grid grid-cols-4 lg:grid-cols-2 gap-4">
+            <StatusCard title="24h Growth" value={growth?.growth24h} />
+            <StatusCard title="30d Growth" value={growth?.growth30d} />
+            <StatusCard title="365d Growth" value={growth?.growth365d} />
             <StatusCard title="Average Days" value={averageDays} />
           </div>
         </div>
-
-        <div className={`p-4 overflow-hidden bg-[#242527] rounded-xl h-full`}>
-          <h3 className="mb-3 leading-[16px]">User Trending</h3>
-          <div className="h-96">
-            <UserTrendChart id={id} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-6 pb-6 h-full">
+          <div className={`p-4 overflow-hidden bg-[#242527] rounded-xl h-full`}>
+            <h3 className="mb-3 leading-[16px]">User Trending</h3>
+            <div className="h-96">
+              <UserTrendChart id={id} />
+            </div>
           </div>
-        </div>
-
-        <div className={`p-4 overflow-hidden bg-[#242527] rounded-xl h-full`}>
-          <h3 className="mb-3 leading-[16px]">Message Trending</h3>
-          <div className="h-96">
-            <MessageTrendChart id={id} />
+          <div className={`p-4 overflow-hidden bg-[#242527] rounded-xl h-full`}>
+            <h3 className="mb-3 leading-[16px]">Message Trending</h3>
+            <div className="h-96">
+              <MessageTrendChart id={id} />
+            </div>
           </div>
-        </div>
 
-        <div className={`p-4 overflow-hidden bg-[#242527] rounded-xl h-full`}>
-          <h3 className="mb-3 leading-[16px]">User Levels</h3>
-          <div className="h-96">
-            <LevelPieChart id={id} />
+          <div className={`p-4 overflow-hidden bg-[#242527] rounded-xl h-full`}>
+            <h3 className="mb-3 leading-[16px]">User Levels</h3>
+            <div className="h-96">
+              <LevelPieChart id={id} />
+            </div>
           </div>
-        </div>
 
-        <div className={`p-4 overflow-hidden bg-[#242527] rounded-xl h-full`}>
-          <h3 className="mb-3 leading-[16px]">User Emotion Colors</h3>
-          <div className="h-96">
-            <EmotionColorChart id={id} />
+          <div className={`p-4 overflow-hidden bg-[#242527] rounded-xl h-full`}>
+            <h3 className="mb-3 leading-[16px]">User Emotion Colors</h3>
+            <div className="h-96">
+              <EmotionColorChart id={id} />
+            </div>
           </div>
         </div>
       </div>
-
       <EditorDialog
         data={group}
         open={showEditorDialog}

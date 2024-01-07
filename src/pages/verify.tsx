@@ -8,29 +8,14 @@ export default function Verify() {
   console.log(AppKey);
 
   return (
-    <div className="relative flex bg-bgB text-bgW flex-col">
-      {/* <div>Verify</div>
-      <h1>Sign up for Newsletter</h1>
-      <form>
-        <input
-          name="Email"
-          type={"email"}
-          value={email}
-          required
-          placeholder="joe@example.com"
-          onChange={(event) => setEmail(event.target.value)}
-        />
-        <input
-          name="Name"
-          type={"name"}
-          value={name}
-          required
-          placeholder="Joe"
-          onChange={(event) => setName(event.target.value)}
-        />
+    <div
+      className="w-full items-center justify-center flex"
+      style={{ height: `calc(100vh - 72px)` }}
+    >
+      <form className="text-center">
         <button type="submit">Sign up</button>
         <ReCAPTCHA sitekey={AppKey} />
-      </form> */}
+      </form>
     </div>
   );
 }

@@ -11,6 +11,7 @@ const theme = {
       },
       text: {
         fill: "#aaa",
+        // fontSize: 14,
       },
     },
   },
@@ -75,8 +76,12 @@ export default function UserTrendChart({ id }: { id: string }) {
         type: "linear",
         reverse: false,
       }}
+      axisBottom={{
+        tickPadding: 5,
+        tickRotation: 0,
+      }}
       pointSize={10}
-      pointBorderWidth={2}
+      pointBorderWidth={1}
       pointBorderColor={{ from: "serieColor" }}
       enableGridY={false}
       curve="linear"

@@ -12,7 +12,7 @@ export default function Verify() {
       className="w-full items-center justify-center flex"
       style={{ height: `calc(100vh - 72px)` }}
     >
-      <form className="text-center">
+      <form className="text-center space-y-2">
         <button type="submit">Sign up</button>
         <ReCAPTCHA sitekey={AppKey} />
       </form>

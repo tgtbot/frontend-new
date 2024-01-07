@@ -66,87 +66,6 @@ function verifyEmailFn(msg: string) {
   return axios.post("/users/verifyAddress", { msg });
 }
 
-function EditorDialog({
-  open,
-  data,
-  handleClose,
-}: {
-  data: any;
-  open: boolean;
-  handleClose: () => void;
-}) {
-  const [email, setEmail] = useState(data.email);
-  const [isPublic, setIsPublic] = useState(data.isPublic || false);
-
-  const queryClient = useQueryClient();
-  const { mutate: mutateUpdateProfile, isPending: isMutatingProfile } =
-    useMutation({
-      mutationKey: ["updateProfile"],
-      mutationFn: updateProfileFn,
-      onSuccess: () => {
-        queryClient.setQueryData(["myProfile"], (oldData: any) => ({
-          ...oldData,
-          email,
-          isPublic,
-        }));
-        toast.success("Successfully updated.");
-        handleClose();
-      },
-      onError: (error: AxiosError<any>) => {
-        const errorMassage = error.response?.data.message || error.message;
-        toast.error(errorMassage);
-      },
-    });
-
-  const isDisabled = useMemo(
-    () => isMutatingProfile || !email,
-    [isMutatingProfile, email]
-  );
-
-  const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!isDisabled) {
-      mutateUpdateProfile({ email, isPublic });
-    }
-  };
-
-  if (!open) return null;
-
-  return (
-    <div className={css.dialog}>
-      <div className={css.dialog__box}>
-        <h3 className={css.dialog__title}>Edit My Profile</h3>
-        <form onSubmit={handleUpdate}>
-          <label>
-            <span>Email</span>
-            <input
-              type="text"
-              value={email || ""}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </label>
-          <label>
-            <span>Is Public</span>
-            <Switch
-              checked={isPublic}
-              onChange={(checked) => setIsPublic(checked)}
-            />
-          </label>
-          <div className={css.dialog__bgroup}>
-            <button type="button" onClick={handleClose}>
-              Cancel
-            </button>
-            <button type="submit" disabled={isDisabled}>
-              Update
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-}
-
 function ConnectDialog({
   open,
   handleClose,
@@ -311,6 +230,88 @@ export default function Profile() {
       };
     },
   });
+
+  function EditorDialog({
+    open,
+    data,
+    handleClose,
+  }: {
+    data: any;
+    open: boolean;
+    handleClose: () => void;
+  }) {
+    const [email, setEmail] = useState(data.email);
+    const [isPublic, setIsPublic] = useState(data.isPublic || false);
+
+    const queryClient = useQueryClient();
+    const { mutate: mutateUpdateProfile, isPending: isMutatingProfile } =
+      useMutation({
+        mutationKey: ["updateProfile"],
+        mutationFn: updateProfileFn,
+        onSuccess: () => {
+          queryClient.setQueryData(["myProfile"], (oldData: any) => ({
+            ...oldData,
+            email,
+            isPublic,
+          }));
+          toast.success("Successfully updated.");
+          handleClose();
+          refetch();
+        },
+        onError: (error: AxiosError<any>) => {
+          const errorMassage = error.response?.data.message || error.message;
+          toast.error(errorMassage);
+        },
+      });
+
+    const isDisabled = useMemo(
+      () => isMutatingProfile || !email,
+      [isMutatingProfile, email]
+    );
+
+    const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      if (!isDisabled) {
+        mutateUpdateProfile({ email, isPublic });
+      }
+    };
+
+    if (!open) return null;
+
+    return (
+      <div className={css.dialog}>
+        <div className={css.dialog__box}>
+          <h3 className={css.dialog__title}>Edit My Profile</h3>
+          <form onSubmit={handleUpdate}>
+            <label>
+              <span>Email</span>
+              <input
+                type="text"
+                value={email || ""}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </label>
+            <label>
+              <span>Is Public</span>
+              <Switch
+                checked={isPublic}
+                onChange={(checked) => setIsPublic(checked)}
+              />
+            </label>
+            <div className={css.dialog__bgroup}>
+              <button type="button" onClick={handleClose}>
+                Cancel
+              </button>
+              <button type="submit" disabled={isDisabled}>
+                Update
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   const handleShowConnectDialog = (targetChainName: string) => {
     const targetChain = chainIdMap[targetChainName];

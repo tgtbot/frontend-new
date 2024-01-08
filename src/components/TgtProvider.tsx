@@ -18,7 +18,7 @@ export const TgtProvider = ({ children }: { children: any }) => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768); // 假設手機版寬度小於768px
+      setIsMobile(window.innerWidth < 1024); // 假設手機版寬度小於768px
     };
 
     // 初始化

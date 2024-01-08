@@ -98,12 +98,6 @@
   opacity: 0.5;
 }
 
-.myGroups {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
 .groupCard {
   &__heading {
     padding-top: 4px;

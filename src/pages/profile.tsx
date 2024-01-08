@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import {
@@ -11,7 +11,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axios } from "@/queries";
 import toast from "react-hot-toast";
 import dayjs from "dayjs";
-// import PageLayout from "components/PageLayout";
+import { Swiper, SwiperSlide } from "swiper/react";
+// Import Swiper styles
+import "swiper/css";
 import LoadingPage from "@/components/LoadingPage/LoadingPage";
 import Card from "@/components/Card/Card";
 // import Switch from "components/Switch";
@@ -19,6 +21,7 @@ import css from "@/styles/pages/User.module.scss";
 
 import type { AxiosError } from "axios";
 import Switch from "@/components/Switch/Switch";
+import { TgtContext } from "@/components/TgtProvider";
 
 const chainIdMap: Record<
   string,
@@ -91,10 +94,9 @@ function GroupCard({ data }: any) {
     queryFn: ({ queryKey }) => axios.get(`/groups/info/${queryKey[1]}`),
     select: (data: any) => data.data.data,
   });
-
   if (error) {
     return (
-      <Card className={css.groupCard} height="100%">
+      <Card className="min-h-[308px] flex flex-col justify-center items-center min-w-[100px]">
         <p className={css.groupCard__message}>
           Error to fetch group {data.chat_id}
         </p>
@@ -104,14 +106,14 @@ function GroupCard({ data }: any) {
 
   if (isPending || !group) {
     return (
-      <Card className={css.groupCard} height="100%">
+      <Card className="min-h-[308px] flex flex-col justify-center items-center min-w-[100px]">
         <p className={css.groupCard__message}>Fetching group data...</p>
       </Card>
     );
   }
 
   return (
-    <Card className={css.groupCard}>
+    <Card className="min-h-[308px] min-w-[100px]">
       <h3 className={css.groupCard__heading}>{group.name}</h3>
       <div className={css.groupCard__tags}>
         {group.tags.map((tag: string) => (
@@ -162,6 +164,7 @@ function GroupCard({ data }: any) {
 }
 
 export default function Profile() {
+  const { isMobile } = useContext(TgtContext);
   const [showEditorDialog, setShowEditorDialog] = useState(false);
   const [showConnectDialog, setShowConnectDialog] = useState(false);
   const [targetChainName, setTargetChainName] = useState("");
@@ -389,8 +392,8 @@ export default function Profile() {
         <title>Profile</title>
       </Head>
 
-      <div className={css.profile}>
-        <aside className="flex flex-col gap-6">
+      <div className="p-6 flex lg:flex-row flex-col w-full gap-6">
+        <aside className="flex flex-col gap-6 min-w-[380px]">
           <Card>
             <h2 className={css.userPanel__title}>
               {data.userData.username ||
@@ -445,21 +448,41 @@ export default function Profile() {
 
         <main>
           {!!data.pinnedGroups.length && (
-            <>
+            <div className="space-y-2 w-full">
               <h3 className={css.mainHeading}>Pinned Groups:</h3>
-              <div className={css.myGroups}>
+              {isMobile && (
+                <Swiper spaceBetween={50} slidesPerView={1}>
+                  {data.pinnedGroups.map((i: any) => (
+                    <SwiperSlide key={i.chat_id}>
+                      <GroupCard data={i} />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              )}
+              <div className="hidden grid-cols-3 gap-4 lg:grid">
                 {data.pinnedGroups.map((i: any) => (
                   <GroupCard key={i.chat_id} data={i} />
                 ))}
               </div>
-            </>
+            </div>
           )}
 
-          <h3 className={css.mainHeading}>My Groups:</h3>
-          <div className={css.myGroups}>
-            {data.normalGroups.map((i: any) => (
-              <GroupCard key={i.chat_id} data={i} />
-            ))}
+          <div className="space-y-2 w-full">
+            <h3 className={css.mainHeading}>My Groups:</h3>
+            {isMobile && (
+              <Swiper spaceBetween={50} slidesPerView={1}>
+                {data.normalGroups.map((i: any) => (
+                  <SwiperSlide key={i.chat_id}>
+                    <GroupCard data={i} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            )}
+            <div className="hidden grid-cols-3 gap-4 lg:grid">
+              {data.normalGroups.map((i: any) => (
+                <GroupCard key={i.chat_id} data={i} />
+              ))}
+            </div>
           </div>
         </main>
       </div>

@@ -30,8 +30,8 @@ export default function Mobile({ goPage, urlPath }: Props) {
         <div className="flex h-full max-w-[220px] flex-col gap-8 uppercase">
           <Link
             href="/group/-1002063149191"
-            className={`text-sm tracking-wider flex gap-2 items-center opacity-60 hover:opacity-100 font-bold ${
-              urlPath === "/group/[id]" && "opacity-100"
+            className={`text-sm tracking-wider flex gap-2 items-center hover:opacity-100 font-bold ${
+              urlPath === "/group/[id]" ? "opacity-100" : "opacity-60"
             }`}
             aria-label="DashBoard"
           >
@@ -40,8 +40,8 @@ export default function Mobile({ goPage, urlPath }: Props) {
           </Link>
           <Link
             href="/search"
-            className={`text-sm tracking-wider flex gap-2 items-center opacity-60 hover:opacity-100 font-bold ${
-              urlPath === "/search" && "opacity-100"
+            className={`text-sm tracking-wider flex gap-2 items-center hover:opacity-100 font-bold ${
+              urlPath === "/search" ? "opacity-100" : "opacity-60"
             }`}
             aria-label="Search"
           >
@@ -50,8 +50,8 @@ export default function Mobile({ goPage, urlPath }: Props) {
           </Link>
           <Link
             href="/profile"
-            className={`text-sm tracking-wider flex gap-2 items-center opacity-60 hover:opacity-100 font-bold ${
-              urlPath === "/profile" && "opacity-100"
+            className={`text-sm tracking-wider flex gap-2 items-center hover:opacity-100 font-bold ${
+              urlPath === "/profile" ? "opacity-100" : "opacity-60"
             }`}
             aria-label="Profile"
           >

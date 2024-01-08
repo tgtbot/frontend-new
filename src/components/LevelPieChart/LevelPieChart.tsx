@@ -20,19 +20,32 @@ export default function LevelPieChart({ id }: { id: string }) {
     },
     enabled: !!id,
   });
+  const { data: user, isPending: userPending } = useQuery<any>({
+    queryKey: ["totalUser", id],
+    queryFn: ({ queryKey }: any) => axios.get(`/groups/users/${queryKey[1]}`),
+    select: (data: any) => {
+      return data.data.data["24h_ago"].avg_amount;
+    },
+    enabled: !!id,
+  });
+  console.log("user", user);
 
   return (
     <ResponsivePie
       data={isPending ? [] : data}
-      sortByValue={false}
+      sortByValue={true}
       margin={{ top: 8, right: 8, bottom: 32, left: 8 }}
-      innerRadius={0.5}
+      innerRadius={0.45}
       padAngle={2}
       cornerRadius={4}
       borderWidth={2}
       borderColor={{
         from: "color",
         modifiers: [["darker", 0.25]],
+      }}
+      arcLabel={(point) => {
+        const percentage = ((point.value / user) * 100).toFixed(0);
+        return `${point.id}: ${percentage}%`;
       }}
       enableArcLinkLabels={false}
       activeOuterRadiusOffset={4}

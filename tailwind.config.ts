@@ -22,6 +22,8 @@ const config: Config = {
         signBlack: "#3F3F3F",
         error: "#FF6928",
         buttonBg: "#cd7962",
+        primary: "#D7E3FC",
+        sec: "#BFD2FA",
       },
       boxShadow: {
         skip: "inset 0 -40px 200px -100px rgb(0 0 0 / 1)",

@@ -18,16 +18,10 @@ export const TgtProvider = ({ children }: { children: any }) => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024); // 假設手機版寬度小於768px
+      setIsMobile(window.innerWidth < 1024); // 假設手機版寬度小於1024px
     };
-
-    // 初始化
     handleResize();
-
-    // 監聽視窗大小變化
     window.addEventListener("resize", handleResize);
-
-    // 清理副作用
     return () => {
       window.removeEventListener("resize", handleResize);
     };

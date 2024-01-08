@@ -14,7 +14,7 @@ export default function Mobile({ goPage, urlPath }: Props) {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <header className="relative flex h-[72px] w-full items-center justify-between self-stretch border-b border-bgB/20 bg-bgB px-6 lg:hidden">
+    <header className="relative flex h-[72px] w-full items-center justify-between self-stretch border-bgW/20 border-b bg-bgB px-6 lg:hidden ">
       <Link href="/" className="mr-6 text-lg font-bold">
         TGT BOT
       </Link>

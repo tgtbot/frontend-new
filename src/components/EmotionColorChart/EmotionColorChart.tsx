@@ -9,6 +9,7 @@ export default function LevelPieChart({ id }: { id: string }) {
       axios.get(`/groups/sentiment/${queryKey[1]}`),
     select: (data: any) => {
       const emotions = data.data.data;
+      console.log(emotions);
       return [
         {
           id: "Positive",
@@ -32,7 +33,7 @@ export default function LevelPieChart({ id }: { id: string }) {
       data={isPending ? [] : data}
       sortByValue={false}
       margin={{ top: 8, right: 8, bottom: 32, left: 8 }}
-      innerRadius={0.5}
+      innerRadius={0.45}
       padAngle={2}
       cornerRadius={4}
       borderWidth={2}

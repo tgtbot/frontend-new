@@ -2,6 +2,8 @@ import { ResponsiveLine } from "@nivo/line";
 import { useQueries } from "@tanstack/react-query";
 import { axios } from "@/queries";
 import dayjs from "dayjs";
+import { useContext } from "react";
+import { TgtContext } from "../TgtProvider";
 
 const theme = {
   axis: {
@@ -23,6 +25,7 @@ const theme = {
 };
 
 export default function UserTrendChart({ id }: { id: string }) {
+  const { isMobile } = useContext(TgtContext);
   const { data, isPending } = useQueries<any, any>({
     queries: [
       {
@@ -46,27 +49,27 @@ export default function UserTrendChart({ id }: { id: string }) {
         data: [
           {
             id: "New Users",
-            data: (results[0]?.data || []).map(
-              (i: { date: string; daily_avg_amount: number }) => ({
+            data: (results[0]?.data || [])
+              .slice(isMobile ? -7 : undefined)
+              .map((i: { date: string; daily_avg_amount: number }) => ({
                 x: dayjs(i.date).format("MM/DD"),
                 y: i.daily_avg_amount,
-              })
-            ),
+              })),
           },
           {
             id: "Unique Speakers",
-            data: (results[1]?.data || []).map(
-              (i: { date: string; count: number }) => ({
+            data: (results[1]?.data || [])
+              .slice(isMobile ? -7 : undefined)
+              .map((i: { date: string; count: number }) => ({
                 x: dayjs(i.date).format("MM/DD"),
                 y: i.count,
-              })
-            ),
+              })),
           },
         ],
       };
     },
   });
-
+  console.log("data", data);
   return (
     <ResponsiveLine
       data={isPending ? [] : data}

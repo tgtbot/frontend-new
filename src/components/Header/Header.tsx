@@ -16,7 +16,7 @@ export default function Header({ urlPath }: HeaderProps) {
   return (
     <header className="z-10 h-full w-full overflow-hidden transition-all">
       <Desktop goPage={goPage} urlPath={urlPath} />
-      {/* <Mobile goPage={goPage} urlPath={urlPath} /> */}
+      <Mobile goPage={goPage} urlPath={urlPath} />
     </header>
   );
 }

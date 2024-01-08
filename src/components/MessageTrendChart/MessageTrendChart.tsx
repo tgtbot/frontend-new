@@ -2,6 +2,8 @@ import { ResponsiveLine } from "@nivo/line";
 import { useQuery } from "@tanstack/react-query";
 import { axios } from "@/queries";
 import dayjs from "dayjs";
+import { TgtContext } from "../TgtProvider";
+import { useContext } from "react";
 
 const theme = {
   axis: {
@@ -22,16 +24,19 @@ const theme = {
 };
 
 export default function MessageTrendChart({ id }: { id: string }) {
+  const { isMobile } = useContext(TgtContext);
   const { data, isPending } = useQuery<any>({
     queryKey: ["messageTrends", id],
     queryFn: ({ queryKey }: any) => axios.get(`/groups/msgs/${queryKey[1]}`),
     select: (data: any) => [
       {
         id: "Messages",
-        data: data.data.data.map((i: { date: string; count: string }) => ({
-          x: dayjs(i.date).format("MM/DD"),
-          y: i.count,
-        })),
+        data: data.data.data
+          .slice(isMobile ? -7 : undefined)
+          .map((i: { date: string; count: string }) => ({
+            x: dayjs(i.date).format("MM/DD"),
+            y: i.count,
+          })),
       },
     ],
     enabled: !!id,

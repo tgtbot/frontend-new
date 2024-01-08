@@ -22,6 +22,7 @@ import { useAtom } from "jotai";
 import { sdkAtom } from "@/store";
 import { TgtProvider } from "@/components/TgtProvider";
 import Layout from "@/components/Layout/Layout";
+import { Toaster } from "react-hot-toast";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, polygon],
@@ -95,7 +96,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </TgtProvider>
         </QueryClientProvider>
 
-        {/* <Toaster position="top-center" /> */}
+        <Toaster position="top-center" />
       </RainbowKitProvider>
     </WagmiConfig>
   );

@@ -40,6 +40,10 @@ const chainIdMap: Record<
     isEVM: false,
     wallet: undefined,
   },
+  avalanche: {
+    isEVM: true,
+    chainId: 43114,
+  },
   polygon: {
     isEVM: true,
     chainId: 137,
@@ -57,76 +61,22 @@ const chainIdMap: Record<
     wallet: undefined,
   },
 };
+const chainType = {
+  evm: "evm_address",
+  solana: "solana_address",
+  near: "near_address",
+  polygon: "polygon_address",
+  avalanche: "avalanche_address",
+  tron: "tron_address",
+  TON: "TON_address",
+  BTC: "BTC_address",
+};
 
 function updateProfileFn(data: { email: string; isPublic: boolean }) {
   return axios.post("/users/profile", data);
 }
-
-function verifyEmailFn(msg: string) {
-  return axios.post("/users/verifyAddress", { msg });
-}
-
-function ConnectDialog({
-  open,
-  handleClose,
-  refresh,
-}: {
-  open: boolean;
-  handleClose: () => void;
-  refresh: () => void;
-}) {
-  const { address } = useAccount();
-  const [isSigningMessage, setIsSigningMessage] = useState(false);
-
-  const { mutate: verifyAddress, isPending: isVerifyingAddress } = useMutation({
-    mutationKey: ["verifyEmail"],
-    mutationFn: verifyEmailFn,
-    onSuccess: () => {
-      toast.success("Successfully verified address.");
-      handleClose();
-      refresh();
-    },
-    onError: (error: AxiosError<any>) => {
-      const errorMassage = error.response?.data.message || error.message;
-      toast.error(errorMassage);
-    },
-  });
-
-  const { signMessage } = useSignMessage({
-    message: "TODO: sign message",
-    onSuccess: (msg) => {
-      console.log("signed message", msg);
-      verifyAddress(msg);
-    },
-    onMutate: () => {
-      setIsSigningMessage(true);
-    },
-  });
-
-  if (!open) return null;
-
-  return (
-    <div className={css.dialog}>
-      <div className={css.dialog__box}>
-        <h3 className={css.dialog__title}>Connect Wallet</h3>
-
-        <div className={css.address}>
-          <code>{address}</code>
-        </div>
-
-        <div className={css.dialog__bgroup}>
-          <button onClick={handleClose}>Cancel</button>
-          <button
-            type="submit"
-            onClick={() => signMessage()}
-            disabled={isSigningMessage || isVerifyingAddress}
-          >
-            Connect
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+function connectAddress(data: { address: string; address_type: string }) {
+  return axios.post("/users/verifyAddress", data);
 }
 
 function GroupCard({ data }: any) {
@@ -214,7 +164,8 @@ function GroupCard({ data }: any) {
 export default function Profile() {
   const [showEditorDialog, setShowEditorDialog] = useState(false);
   const [showConnectDialog, setShowConnectDialog] = useState(false);
-  const { chain } = useNetwork();
+  const [targetChainName, setTargetChainName] = useState("");
+  // const { chain } = useNetwork();
   const { switchNetworkAsync } = useSwitchNetwork();
   const { isConnected } = useAccount();
 
@@ -312,36 +263,120 @@ export default function Profile() {
       </div>
     );
   }
+  function ConnectDialog({
+    open,
+    handleClose,
+    refresh,
+  }: {
+    open: boolean;
+    handleClose: () => void;
+    refresh: () => void;
+  }) {
+    const { address } = useAccount();
+    const targetChain = chainIdMap[targetChainName];
+    const targetChainType =
+      chainType[targetChainName as keyof typeof chainType];
+    const [inputAddress, setInputAddress] = useState("");
+    const [isSigningMessage, setIsSigningMessage] = useState(false);
+
+    const { mutate: verifyAddress, isPending: isVerifyingAddress } =
+      useMutation({
+        mutationKey: ["verifyAddress"],
+        mutationFn: connectAddress,
+        onSuccess: () => {
+          toast.success("Successfully connect address.");
+          handleClose();
+          refresh();
+        },
+        onError: (error: AxiosError<any>) => {
+          const errorMassage = error.response?.data.message || error.message;
+          toast.error(errorMassage);
+        },
+      });
+
+    // const { signMessage } = useSignMessage({
+    //   message: "TODO: sign message",
+    //   onSuccess: (msg) => {
+    //     console.log("signed message", msg);
+    //     verifyAddress(msg);
+    //   },
+    //   onMutate: () => {
+    //     setIsSigningMessage(true);
+    //   },
+    // });
+
+    if (!open) return null;
+
+    return (
+      <div className={css.dialog}>
+        <div className={css.dialog__box}>
+          <h3 className={css.dialog__title}>Connect Wallet</h3>
+          <input
+            className="w-full bg-transparent border placeholder:opacity-35 p-2 text-xs"
+            placeholder="please enter your address"
+            value={targetChain.isEVM ? address : inputAddress}
+            readOnly={targetChain.isEVM}
+            defaultValue={targetChain.isEVM ? address : inputAddress}
+          />
+
+          <div className={css.dialog__bgroup}>
+            <button onClick={handleClose}>Cancel</button>
+            <button
+              type="submit"
+              onClick={
+                targetChain.isEVM
+                  ? () =>
+                      verifyAddress({
+                        address,
+                        address_type: targetChainType,
+                      } as any)
+                  : () =>
+                      verifyAddress({
+                        inputAddress,
+                        address_type: targetChainType,
+                      } as any)
+              }
+              disabled={isSigningMessage || isVerifyingAddress}
+            >
+              Connect
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleShowConnectDialog = (targetChainName: string) => {
+    setTargetChainName(targetChainName);
     const targetChain = chainIdMap[targetChainName];
-
-    if (!targetChain.isEVM) {
+    if (targetChain.isEVM) {
       // TODO: redirect to a specific connect page,
       //       or use a multichain wallet.
-      toast.error("This chain is not supported yet.");
-      return;
-    }
-
-    if (!isConnected) {
-      toast.error("Please connect your wallet first.");
-      return;
-    }
-
-    if (chain!.id !== targetChain.chainId) {
-      switchNetworkAsync!(targetChain.chainId)
-        .then(() => {
-          setShowConnectDialog(true);
-        })
-        .catch(() => {
-          toast.error("Failed to switch network.");
-        });
-      return;
-    }
-
-    if (chain!.id === targetChain.chainId) {
+      if (!isConnected) {
+        toast.error("Please connect your wallet first.");
+        return;
+      }
+      setShowConnectDialog(true);
+    } else {
       setShowConnectDialog(true);
     }
+    // if (!isConnected) {
+    //   toast.error("Please connect your wallet first.");
+    //   return;
+    // }
+    // if (chain!.id !== targetChain.chainId) {
+    //   switchNetworkAsync!(targetChain.chainId)
+    //     .then(() => {
+    //       setShowConnectDialog(true);
+    //     })
+    //     .catch(() => {
+    //       toast.error("Failed to switch network.");
+    //     });
+    //   return;
+    // }
+    // if (chain!.id === targetChain.chainId) {
+    //   setShowConnectDialog(true);
+    // }
   };
 
   if (isPending || !data) {
@@ -376,35 +411,33 @@ export default function Profile() {
             <table className={css.table}>
               <thead>
                 <tr>
-                  <th>Chain</th>
-                  <th>Address</th>
+                  <th className="opacity-30">Chain</th>
+                  <th className="opacity-30">Address</th>
                 </tr>
               </thead>
               <tbody>
-                {["evm", "BTC", "near", "polygon", "solana", "TON", "tron"].map(
-                  (i) => {
-                    const address = data.userData[`${i}_address`];
-                    return (
-                      <tr key={`chain-${i}`}>
-                        <td>
-                          <span>{i.toUpperCase()}</span>
-                        </td>
-                        <td>
-                          {address ? (
-                            <code>{address}</code>
-                          ) : (
-                            <button
-                              className={css.connectButton}
-                              onClick={() => handleShowConnectDialog(i)}
-                            >
-                              Connect
-                            </button>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  }
-                )}
+                {Object.keys(chainType).map((i) => {
+                  const address = data.userData[`${i}_address`];
+                  return (
+                    <tr key={`chain-${i}`}>
+                      <td>
+                        <span>{i.toUpperCase()}</span>
+                      </td>
+                      <td>
+                        {address ? (
+                          <code>{address}</code>
+                        ) : (
+                          <button
+                            className={css.connectButton}
+                            onClick={() => handleShowConnectDialog(i)}
+                          >
+                            Connect
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </Card>

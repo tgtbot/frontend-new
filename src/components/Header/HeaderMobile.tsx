@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import Image from "next/image";
-// import logo from "@/assets/MLOGO_B.svg";
 import { LuMenu } from "react-icons/lu";
 import { RxCross2 } from "react-icons/rx";
+import Link from "next/link";
+import { MdDashboard } from "react-icons/md";
+import { FaSearch, FaUser } from "react-icons/fa";
 
 interface Props {
   goPage: (page: string) => void;
@@ -13,60 +14,50 @@ export default function Mobile({ goPage, urlPath }: Props) {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <header className="relative flex h-[72px] w-full items-center justify-between self-stretch border-b border-bgB/20 bg-bgB px-4 lg:hidden">
-      <LuMenu size="24px" color="#0F0F0F" onClick={() => setShowMenu(true)} />
-
-      <div className="absolute left-1/2 flex -translate-x-[50%]">
-        {/* <Image src={logo} alt="Bako" className="w-full" /> */}
-      </div>
-      {/* <FaUser
-        color="black"
-        size="24px"
-        onClick={() => goPage("/profile")}
-        className="cursor-pointer"
-      /> */}
+    <header className="relative flex h-[72px] w-full items-center justify-between self-stretch border-b border-bgB/20 bg-bgB px-6 lg:hidden">
+      <Link href="/" className="mr-6 text-lg font-bold">
+        TGT BOT
+      </Link>
+      <LuMenu size="24px" color="#FFFFFF" onClick={() => setShowMenu(true)} />
       <div
-        className={`fixed left-0 top-0 z-50 h-full w-[82%] bg-bgB pl-4 text-bgW shadow-2xl transition-all duration-300 ease-linear ${
-          showMenu ? "" : "-translate-x-full"
+        className={`fixed right-0 top-0 z-50 h-full w-[50%] bg-bgB pl-4 text-bgW shadow-2xl transition-all duration-300 ease-linear ${
+          showMenu ? "" : "translate-x-full"
         }`}
       >
         <div onClick={() => setShowMenu(false)} className="pb-8 pt-6">
           <RxCross2 size="24px" />
         </div>
         <div className="flex h-full max-w-[220px] flex-col gap-8 uppercase">
-          <a
-            className="text-sm leading-[140%] tracking-[.84px]"
-            onClick={() => {
-              goPage("/about");
-              setShowMenu(false);
-            }}
+          <Link
+            href="/group/-1002063149191"
+            className={`text-sm tracking-wider flex gap-2 items-center opacity-60 hover:opacity-100 font-bold ${
+              urlPath === "/group/[id]" && "opacity-100"
+            }`}
+            aria-label="DashBoard"
           >
-            About us
-          </a>
-          <a
-            className="text-sm leading-[140%] tracking-[.84px]"
-            onClick={() => {
-              goPage("/collection");
-              setShowMenu(false);
-            }}
+            <MdDashboard size="21px" />
+            DashBoard
+          </Link>
+          <Link
+            href="/search"
+            className={`text-sm tracking-wider flex gap-2 items-center opacity-60 hover:opacity-100 font-bold ${
+              urlPath === "/search" && "opacity-100"
+            }`}
+            aria-label="Search"
           >
-            our collection
-          </a>
-          <div className="h-[1px] w-[220px] bg-bgW opacity-40" />
-          {/* {Object.entries(profilePath).map(([path, url]) => (
-            <a
-              key={path}
-              className={`${
-                url === "/" ? "opacity-40" : ""
-              } text-sm leading-[140%] tracking-[.84px]`}
-              onClick={() => {
-                goPage(url);
-                setShowMenu(false);
-              }}
-            >
-              {path}
-            </a>
-          ))} */}
+            <FaSearch size="18px" />
+            Search
+          </Link>
+          <Link
+            href="/profile"
+            className={`text-sm tracking-wider flex gap-2 items-center opacity-60 hover:opacity-100 font-bold ${
+              urlPath === "/profile" && "opacity-100"
+            }`}
+            aria-label="Profile"
+          >
+            <FaUser size="16px" />
+            Profile
+          </Link>
         </div>
       </div>
     </header>

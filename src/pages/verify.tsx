@@ -1,9 +1,9 @@
 import { axios } from "@/queries";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { toast } from "react-hot-toast";
 function verifyFn(msg: string): Promise<AxiosResponse<{ data: any }>> {
@@ -12,6 +12,7 @@ function verifyFn(msg: string): Promise<AxiosResponse<{ data: any }>> {
 export default function Verify() {
   const router = useRouter();
   const { redirect } = router.query as { redirect?: string };
+  const [verify, setVerify] = useState<boolean>(false);
   const { mutate: mutateVerify } = useMutation({
     mutationKey: ["verify"],
     mutationFn: verifyFn,
@@ -33,11 +34,11 @@ export default function Verify() {
     captchaRef.current.reset();
     mutateVerify(token);
   };
-  // useEffect(() => {
-  //   if (captchaRef.current.getValue()) {
-  //     console.log(captchaRef.current.getValue());
-  //   }
-  // }, [captchaRef.current, captchaRef.current?.getValue()]);
+
+  function onChange() {
+    setVerify(true);
+  }
+
   return (
     <>
       <Head>
@@ -48,11 +49,14 @@ export default function Verify() {
         style={{ height: `calc(100vh - 72px)` }}
       >
         <form onSubmit={handleSubmit} className="text-center space-y-2">
-          <ReCAPTCHA sitekey={AppKey} ref={captchaRef} />
+          <ReCAPTCHA sitekey={AppKey} ref={captchaRef} onChange={onChange} />
 
           <button
             type="submit"
-            className={`w-full bg-buttonBg rounded-lg text-white hover:opacity-70 py-3 ${""}`}
+            disabled={!verify}
+            className={`w-full bg-buttonBg rounded-lg text-white hover:opacity-70 py-3 ${
+              verify ? "" : "opacity-50 cursor-not-allowed"
+            }`}
           >
             Verify
           </button>

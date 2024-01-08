@@ -9,8 +9,9 @@ import Card from "@/components/Card/Card";
 import LoadingPage from "@/components/LoadingPage/LoadingPage";
 import { useContext } from "react";
 import { TgtContext } from "@/components/TgtProvider";
-import Swiper from "swiper";
-import { SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
+// Import Swiper styles
+import "swiper/css";
 
 function GroupCard({ data }: any) {
   const lastMessageTime = dayjs(data.totalMsgsAndTime.lastMessageTime);

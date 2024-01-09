@@ -53,7 +53,7 @@ export default function Search() {
       </Head>
 
       <div className="flex flex-col lg:flex-row gap-6 p-6">
-        <Card className="min-w-[380px] h-full">
+        <Card className="lg:min-w-[380px] h-full">
           <input
             type="search"
             value={keyword}

@@ -5,7 +5,7 @@ import { axios } from "@/queries";
 import toast from "react-hot-toast";
 import type { AxiosError, AxiosResponse } from "axios";
 import LoadingPage from "@/components/LoadingPage/LoadingPage";
-import ChainSelect from "@/components/Select/chainSelect";
+import ChainSelect from "@/components/Select/ChainSelect";
 import { useState } from "react";
 
 const chainNameList = [
@@ -65,7 +65,9 @@ export default function DepositPage() {
           <div className="text-2xl font-medium">Deposit</div>
           <div className="flex flex-col gap-4">
             <ChainSelect onChange={setChainName} />
-            <a className="uppercase">now you select : {chainName}</a>
+            <a className="uppercase font-semibold text-primary">
+              now you select : {chainName}
+            </a>
             <a className="">address : {address}</a>
             <a className="">balance : {balance}</a>
           </div>

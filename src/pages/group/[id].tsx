@@ -169,10 +169,8 @@ function EditorDialog({
 
 export default function GroupDashboardPage() {
   const router = useRouter();
-  const [showEditorDialog, setShowEditorDialog] = useState(false);
-
   const id = router.query.id as string;
-
+  const [showEditorDialog, setShowEditorDialog] = useState(false);
   const { group, growth, averageDays, isPending } = useQueries<any, any>({
     queries: [
       {

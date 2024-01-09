@@ -321,6 +321,7 @@ export default function Profile() {
             value={targetChain.isEVM ? address : inputAddress}
             readOnly={targetChain.isEVM}
             defaultValue={targetChain.isEVM ? address : inputAddress}
+            onChange={(e) => setInputAddress(e.target.value)}
           />
 
           <div className={css.dialog__bgroup}>
@@ -336,7 +337,7 @@ export default function Profile() {
                       } as any)
                   : () =>
                       verifyAddress({
-                        inputAddress,
+                        address: inputAddress,
                         address_type: targetChainType,
                       } as any)
               }
@@ -429,7 +430,9 @@ export default function Profile() {
                       </td>
                       <td>
                         {address ? (
-                          <code>{address}</code>
+                          <code>
+                            {address.slice(0, 20) + "..." + address.slice(-4)}
+                          </code>
                         ) : (
                           <button
                             className={css.connectButton}

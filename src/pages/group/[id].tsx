@@ -171,42 +171,64 @@ export default function GroupDashboardPage() {
   const router = useRouter();
   const id = router.query.id as string;
   const [showEditorDialog, setShowEditorDialog] = useState(false);
-  const { group, growth, averageDays, isPending } = useQueries<any, any>({
-    queries: [
-      {
-        queryKey: ["group", id],
-        queryFn: ({ queryKey }: any) =>
-          axios.get(`/groups/info/${queryKey[1]}`),
-        select: (data: any) => data.data.data,
-        enabled: !!id,
-      },
-      {
-        queryKey: ["growth", id],
-        queryFn: ({ queryKey }: any) =>
-          axios.get(`/groups/users/${queryKey[1]}`),
-        select: (data: any) => data.data.data,
-        enabled: !!id,
-      },
-      {
-        queryKey: ["averageDays", id],
-        queryFn: ({ queryKey }: any) =>
-          axios.get(`/groups/average_days/${queryKey[1]}`),
-        select: (data: any) => data.data.data,
-        enabled: !!id,
-      },
-    ],
-    combine: (results: any) => ({
-      isPending: results.some((result: any) => result.isPending),
-      group: results[0]?.data,
-      growth: results[1]?.data && {
-        growth24h: results[1].data["24h_ago"].avg_amount,
-        growth30d: results[1].data["30d_ago"].avg_amount,
-        growth365d: results[1].data["365d_ago"].avg_amount,
-      },
-      averageDays: results[2]?.data && dayjs().diff(results[2].data, "day"),
-    }),
-  });
-
+  const { group, growth, averageDays, isPending, error } = useQueries<any, any>(
+    {
+      queries: [
+        {
+          queryKey: ["group", id],
+          queryFn: ({ queryKey }: any) =>
+            axios.get(`/groups/info/${queryKey[1]}`),
+          select: (data: any) => data.data.data,
+          enabled: !!id,
+        },
+        {
+          queryKey: ["growth", id],
+          queryFn: ({ queryKey }: any) =>
+            axios.get(`/groups/users/${queryKey[1]}`),
+          select: (data: any) => data.data.data,
+          enabled: !!id,
+        },
+        {
+          queryKey: ["averageDays", id],
+          queryFn: ({ queryKey }: any) =>
+            axios.get(`/groups/average_days/${queryKey[1]}`),
+          select: (data: any) => data.data.data,
+          enabled: !!id,
+        },
+      ],
+      combine: (results: any) => ({
+        isPending: results.some((result: any) => result.isPending),
+        error: results.find((result: any) => result.error),
+        group: results[0]?.data,
+        growth: results[1]?.data && {
+          growth24h: results[1].data["24h_ago"].avg_amount,
+          growth30d: results[1].data["30d_ago"].avg_amount,
+          growth365d: results[1].data["365d_ago"].avg_amount,
+        },
+        averageDays: results[2]?.data && dayjs().diff(results[2].data, "day"),
+      }),
+    }
+  );
+  if (error)
+    return (
+      <>
+        <Head>
+          <title>Group Dashboard</title>
+        </Head>
+        <div
+          className="flex items-center justify-center"
+          style={{ height: `calc(100vh - 72px)` }}
+        >
+          <div className="text-center space-y-2">
+            <h1 className="text-2xl font-bold">Error</h1>
+            <p className="text-primary text-2xl">This group is Private</p>
+            <p className="text-primary text-xl">
+              only admin can see these info
+            </p>
+          </div>
+        </div>
+      </>
+    );
   if (isPending) return <LoadingPage title="Group Dashboard" />;
 
   return (

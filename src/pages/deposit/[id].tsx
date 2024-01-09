@@ -52,16 +52,21 @@ export default function DepositOtherPage() {
   });
   if (error)
     return (
-      <div
-        className="w-full items-center justify-center flex"
-        style={{ height: `calc(100vh - 72px)` }}
-      >
-        <div className=" overflow-visible w-2/5 min-h-52 justify-center p-4 bg-[#242527] flex flex-col items-center rounded-xl">
-          <div className="flex flex-col gap-4 text-2xl font-medium uppercase">
-            not found {id} User
+      <>
+        <Head>
+          <title>Deposit</title>
+        </Head>
+        <div
+          className="w-full items-center justify-center flex"
+          style={{ height: `calc(100vh - 72px)` }}
+        >
+          <div className=" overflow-visible w-2/5 min-h-52 justify-center p-4 bg-[#242527] flex flex-col items-center rounded-xl">
+            <div className="flex flex-col gap-4 text-2xl font-medium uppercase">
+              not found {id} User
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   if (isPending || addressPending || balancePending)
     return <LoadingPage title="Deposit" />;

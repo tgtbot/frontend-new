@@ -177,6 +177,7 @@ export default function Profile() {
     queryFn: () => axios.get("/users/profile"),
     select: (data: any) => {
       const { userInfo, groupsInfo } = data.data.data;
+      console.log("userInfo", userInfo);
       return {
         userData: userInfo,
         pinnedGroups: groupsInfo.filter((i: any) => i.isPinned),

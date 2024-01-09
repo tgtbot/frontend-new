@@ -394,7 +394,7 @@ export default function Profile() {
       </Head>
 
       <div className="p-6 flex lg:flex-row flex-col w-full gap-6">
-        <aside className="flex flex-col gap-6 min-w-[380px]">
+        <aside className="flex flex-col gap-6 lg:min-w-[380px]">
           <Card>
             <h2 className={css.userPanel__title}>
               {data.userData.username ||

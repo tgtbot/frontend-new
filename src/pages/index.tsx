@@ -1,16 +1,15 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-
 export default function Home() {
   return (
     <main className="relative flex flex-col bg-bgB text-bgW">
       <div
-        className="w-full flex items-center"
+        className="w-full flex flex-col lg:flex-row items-center py-6"
         style={{ height: `calc(100vh - 72px)` }}
       >
-        <div className="flex flex-col items-center justify-center w-3/5 gap-2">
-          <a className="font-extrabold text-6xl uppercase">Telegramland</a>
-          <a className="font-medium text-5xl uppercase text-primary">
+        <div className="flex flex-col items-center justify-center w-full lg:w-3/5 gap-2">
+          <a className="font-extrabold lg:text-6xl text-2xl uppercase">
+            Telegramland
+          </a>
+          <a className="font-medium lg:text-5xl text-xl uppercase text-primary">
             Dashboard
           </a>
         </div>

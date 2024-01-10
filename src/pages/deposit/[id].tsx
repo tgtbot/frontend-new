@@ -60,8 +60,8 @@ export default function DepositOtherPage() {
           className="w-full items-center justify-center flex"
           style={{ height: `calc(100vh - 72px)` }}
         >
-          <div className=" overflow-visible w-2/5 min-h-52 justify-center p-4 bg-[#242527] flex flex-col items-center rounded-xl">
-            <div className="flex flex-col gap-4 text-2xl font-medium uppercase">
+          <div className="overflow-visible lg:w-2/5 m-4 lg:m-0 min-h-52 justify-center p-4 bg-[#242527] flex flex-col items-center rounded-xl">
+            <div className="flex flex-col gap-4 text-sm lg:text-2xl font-medium uppercase">
               not found {id} User
             </div>
           </div>
@@ -80,15 +80,17 @@ export default function DepositOtherPage() {
         className="w-full items-center justify-center flex"
         style={{ height: `calc(100vh - 72px)` }}
       >
-        <div className=" overflow-visible w-2/5 min-h-52 p-4 bg-[#242527] flex flex-col items-center rounded-xl">
-          <div className="text-2xl font-medium">Deposit to {id}</div>
-          <div className="flex flex-col gap-4">
+        <div className=" overflow-auto w-4/5 lg:w-2/5 min-h-52 p-4 bg-[#242527] flex flex-col items-center rounded-xl">
+          <div className="text-lg lg:text-2xl font-medium">Deposit to {id}</div>
+          <div className="flex flex-col gap-4 w-full">
             <ChainSelect onChange={setChainName} />
-            <a className="uppercase font-semibold text-primary">
+            <a className="uppercase font-semibold text-primary text-sm lg:text-base">
               now you select : {chainName}
             </a>
-            <a className="">address : {address}</a>
-            <a className="">balance : {balance}</a>
+            <a>address :</a>
+            <a className="text-xs lg:text-base">{address}</a>
+            <a className="">balance :</a>
+            <a className="text-xs lg:text-base">{balance}</a>
           </div>
         </div>
       </div>
